@@ -12,6 +12,9 @@
 		9FFE28E82035CBCF0002E09A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9FFE28E62035CBCF0002E09A /* Main.storyboard */; };
 		9FFE28EA2035CBCF0002E09A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FFE28E92035CBCF0002E09A /* Assets.xcassets */; };
 		9FFE28ED2035CBCF0002E09A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9FFE28EB2035CBCF0002E09A /* LaunchScreen.storyboard */; };
+		9FFE28F52035CC6C0002E09A /* ForecastForTomorrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FFE28F42035CC6C0002E09A /* ForecastForTomorrow.swift */; };
+		9FFE28F7203AC1EF0002E09A /* ForecastForNextDays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FFE28F6203AC1EF0002E09A /* ForecastForNextDays.swift */; };
+		9FFE28F9203C83560002E09A /* ForecastForTomorrowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FFE28F8203C83560002E09A /* ForecastForTomorrowViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,9 @@
 		9FFE28E92035CBCF0002E09A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9FFE28EC2035CBCF0002E09A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9FFE28EE2035CBCF0002E09A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9FFE28F42035CC6C0002E09A /* ForecastForTomorrow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForecastForTomorrow.swift; sourceTree = "<group>"; };
+		9FFE28F6203AC1EF0002E09A /* ForecastForNextDays.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForecastForNextDays.swift; sourceTree = "<group>"; };
+		9FFE28F8203C83560002E09A /* ForecastForTomorrowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForecastForTomorrowViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,10 +62,13 @@
 			children = (
 				9FFE28E22035CBCF0002E09A /* AppDelegate.swift */,
 				9FFE28E42035CBCF0002E09A /* ViewController.swift */,
+				9FFE28F8203C83560002E09A /* ForecastForTomorrowViewController.swift */,
 				9FFE28E62035CBCF0002E09A /* Main.storyboard */,
 				9FFE28E92035CBCF0002E09A /* Assets.xcassets */,
 				9FFE28EB2035CBCF0002E09A /* LaunchScreen.storyboard */,
 				9FFE28EE2035CBCF0002E09A /* Info.plist */,
+				9FFE28F42035CC6C0002E09A /* ForecastForTomorrow.swift */,
+				9FFE28F6203AC1EF0002E09A /* ForecastForNextDays.swift */,
 			);
 			path = WindyWalk;
 			sourceTree = "<group>";
@@ -136,8 +145,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FFE28F9203C83560002E09A /* ForecastForTomorrowViewController.swift in Sources */,
 				9FFE28E52035CBCF0002E09A /* ViewController.swift in Sources */,
 				9FFE28E32035CBCF0002E09A /* AppDelegate.swift in Sources */,
+				9FFE28F7203AC1EF0002E09A /* ForecastForNextDays.swift in Sources */,
+				9FFE28F52035CC6C0002E09A /* ForecastForTomorrow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
