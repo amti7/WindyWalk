@@ -1,0 +1,6 @@
+framework module Pods_WindyWalk {
+  umbrella header "Pods-WindyWalk-umbrella.h"
+
+  export *
+  module * { export * }
+}
