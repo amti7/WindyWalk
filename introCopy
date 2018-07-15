@@ -1,0 +1,64 @@
+//
+//  ViewController.swift
+//  WindyWalk
+//
+//  Created by Kamil Gacek on 15/02/2018.
+//  Copyright © 2018 Kamil Gacek. All rights reserved.
+//
+
+import UIKit
+import ObjectMapper
+
+class IntroViewController: UIViewController {
+
+
+
+
+override func viewDidLoad() {
+super.viewDidLoad()
+
+}
+
+
+
+
+
+func obtainDataForTheDay(date: Date, formatter: DateFormatter) -> String {
+return formatter.string(from: date) //+ " 12:00:00"
+}
+
+
+func retrieveCityNameFromUser(){
+let cityName = "Krakow"
+
+var URL = "http://api.openweathermap.org/data/2.5/forecast?q="  + cityName + "&appid=e3eeed175d5b660c006531bcb3a0117e"
+}
+
+
+
+override func didReceiveMemoryWarning() {
+super.didReceiveMemoryWarning()
+// Dispose of any resources that can be recreated.
+}
+}
+
+
+extension Date {
+
+var noon: Date {
+return Calendar.current.date(bySettingHour: 15, minute: 0, second: 0, of: self)!
+}
+var oneDayAhead: Date {
+return Calendar.current.date(byAdding: .day, value: +1, to: noon)!
+}
+var twoDaysAhead: Date {
+return Calendar.current.date(byAdding: .day, value: +2, to: noon)!
+}
+var threeDaysAhead: Date {
+return Calendar.current.date(byAdding: .day, value: +3, to: noon)!
+}
+var fourDaysAhead: Date {
+return Calendar.current.date(byAdding: .day, value: +4, to: noon)!
+}
+
+}

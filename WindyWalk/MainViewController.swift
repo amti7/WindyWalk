@@ -9,6 +9,11 @@
 import Foundation
 import UIKit
 
+enum ErrorType: Error {
+    case ForecastDataNotObtained
+    
+}
+
 class MainViewController: UIViewController {
     
     @IBOutlet var cityNameLabel: UILabel!
@@ -16,116 +21,77 @@ class MainViewController: UIViewController {
     @IBOutlet var stateLabel: UILabel!
     @IBOutlet var temperatureLabel: UILabel!
     @IBOutlet var humidityLabel: UILabel!
-    @IBOutlet var rainLabel: UILabel!
+    @IBOutlet var downFallLabel: UILabel!
+    @IBOutlet var downFallValueLabel: UILabel!
+    @IBOutlet var windLabel: UILabel!
+
+    var forecast: ExtendedForecast?
+    var forecastArray: Array<Forecast> = []
     
     override func viewDidLoad() {
-        
-    }
-  
-   // let forecast =  ForecastForTomorrow()
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
-      //  fillDataWithGivenApi(forecast: forecast, apiUrl: "http://samples.openweathermap.org/data/2.5/forecast/daily?q=M%C3%BCnchen,DE&appid=b6907d289e10d714a6e88b30761fae22")
-        //fillDataWithGivenApi(forecast: forecast, apiUrl: "http://api.openweathermap.org/data/2.5/forecast?q=Krakow&appid=e3eeed175d5b660c006531bcb3a0117e")
-  
-       
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        
+        do {
+            try self.fillUIWithObtainedData(forecast: forecast!)
+        } catch ErrorType.ForecastDataNotObtained(let description) {
+            print(description)
+        }
+        var iconType = self.displayProperIconToWeatherState(extForecast: forecast!)
+        self.displayImageWithSpecificStateAndPosition(imageName: iconType, xParam: 115, yParam: 170)
 
     }
-    /*
-    override func viewDidLayoutSubviews() {
-        provideParametersInLabels()
+
+    func fillUIWithObtainedData(forecast: ExtendedForecast){
+        temperatureLabel.text = String(transposeWeatherParamToStringInCelcius(temp: forecast.temperature!))
+        stateLabel.text = forecast.state!
+        windLabel.text = String(describing: forecast.wind!) + " m/s"
+        dateLabel.text = forecast.date
+        cityNameLabel.text = String(forecast.cityName!)
+        downFallLabel.text = forecast.typeOfDownfall
+        downFallValueLabel.text = String(describing: forecast.downfall!) + " mm"
+        humidityLabel.text = String(forecast.humidity!) + " %"
+        
     }
     
-    func fillDataWithGivenApi(forecast: Forecast,apiUrl: String){
-        
-        var currentDate =  "2018-02-23 15:00:00"
-        
-        let url = NSURL(string: apiUrl)
-        URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
-            if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
-                if let list = jsonObj!.value(forKey: "list") as? NSArray {
-                    for itemList in list {
-                        
-                        var isDesiredInForecast = false
-                        
-                        if let listDict = itemList as? NSDictionary {
-                            if let dateTime = listDict.value(forKey: "dt_txt") as? String {
-                                if (dateTime == currentDate ){
-                                    forecast.date = dateTime
-                                    isDesiredInForecast = true
-                                }
-                            }
-                            if(isDesiredInForecast){
-                                if let tempDict = listDict.value(forKey: "temp") as? NSDictionary {
-                                    if let day = tempDict.value(forKey: "day") as? Double {
-                                        forecast.temperature = day
-                                        print(day)
-                                    }
-                                    if let humidity = tempDict.value(forKey: "humidity") as? Double {
-                                        forecast.humidity = humidity
-                                    }
-                                }
-                                
-                                if let weatherArr = listDict.value(forKey: "weather") as? NSArray {
-                                    for singleWeather in weatherArr {
-                                        if let weather = singleWeather as? NSDictionary{
-                                            if let main = weather.value(forKey: "main") as? String {
-                                                forecast.state = main
-                                            }
-                                        }
-                                    }
-                                }
-                                if let rainDict = listDict.value(forKey: "rain") as? NSDictionary {
-                                    if let rain = rainDict.value(forKey: "3h") as? Double {
-                                        forecast.rain = rain
-                                    }
-                                }
-                            }
-                        }
-                    }
+    func transposeWeatherParamToStringInCelcius(temp: Double) -> String{
+        let temperaturToReturn = String(describing: (Double(round( 10 * (temp - 273.15))/10))) + "°c"
+        return temperaturToReturn
+    }
+    
+    func displayImageWithSpecificStateAndPosition(imageName: String,xParam: Int, yParam: Int) {
+        let image: UIImage = UIImage(named: imageName)!
+        let dayOneAheadImage = UIImageView(image: image)
+        dayOneAheadImage.frame = CGRect(origin: CGPoint(x: xParam,y :yParam), size: CGSize(width: 80, height: 80))
+        self.view.addSubview(dayOneAheadImage)
+    }
+    
+    func displayProperIconToWeatherState(extForecast: ExtendedForecast) -> String {
+        var returnString = ""
+        if let weatherParam = Optional(extForecast) {
+            switch(weatherParam.state!){
+            case "clear sky":
+                if(weatherParam.date?.hasSuffix("00:00:00"))!{
+                    returnString =  "clear-night"
+                } else {
+                    returnString =  "clear"
                 }
-                if let city = jsonObj!.value(forKey: "city") as? NSDictionary {
-                    if let cityName = city.value(forKey: "name") as? String {
-                        forecast.name = cityName
-                    }
+            case "scattered clouds","broken clouds","scattered clouds","few clouds","overcast clouds":
+                if(weatherParam.date?.hasSuffix("00:00:00"))!{
+                    returnString =  "cloudy-night"
+                } else {
+                    returnString =  "cloudy"
                 }
+            case "light rain","moderate rain":
+                returnString =  "rain"
+            case "light snow":
+                returnString =  "snow"
+            default:
+                returnString =  "default"
             }
-        }).resume()
+        }
+        return returnString
     }
-    */
-    /*
-    func provideParametersInLabels() {
-        if let city = forecast.name {
-            cityNameLabel.text = city
-        }
-        if let date = forecast.date {
-            dateLabel.text = date
-        }
-        if let state = forecast.state {
-            stateLabel.text = state
-        }
-        if let temperature = forecast.temperature {
-            temperatureLabel.text = String(temperature)
-        }
-        if let humidity = forecast.humidity {
-            humidityLabel.text = String(humidity)
-        }
-        if let rain = forecast.rain {
-            rainLabel.text = String(rain)
-        }
-    }
-     */
-    /*
-    func validateForecastParameter<T>(parameter: T,label: UILabel){
-        if var param = parameter {
-            label.text = param
-        }  // TODO
-    }
-    */
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let DestViewController: DetailsViewController = segue.destination as! DetailsViewController
+        DestViewController.forecastArrayFromMainVC = forecastArray
+    }
 }

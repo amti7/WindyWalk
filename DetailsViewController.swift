@@ -9,174 +9,141 @@
 import Foundation
 import UIKit
 
-
-
 class DetailsViewController: UIViewController {
     
-    @IBOutlet var dateOneAhead: UILabel!
-    @IBOutlet var dateTwoAhead: UILabel!
-    @IBOutlet var dateThreeAhead: UILabel!
-    @IBOutlet var dateFourAhead: UILabel!
+    @IBOutlet var dayOneWeekDay: UILabel!
+    @IBOutlet var dayOneTempMidnightLabel: UILabel!
+    @IBOutlet var dayOneTempSixOLabel: UILabel!
+    @IBOutlet var dayOneTempTwelveOLabel: UILabel!
+    @IBOutlet var dayOnTempSixAfternoonLabel: UILabel!
     
-    @IBOutlet var tempOneAhead: UILabel!
-    @IBOutlet var tempTwoAhead: UILabel!
-    @IBOutlet var tempThreeAhead: UILabel!
-    @IBOutlet var tempFourAhead: UILabel!
+    @IBOutlet var dayTwoWeekDay: UILabel!
+    @IBOutlet var dayTwoTempMidnightLabel: UILabel!
+    @IBOutlet var dayTwoTemSixOLabel: UILabel!
+    @IBOutlet var dayTwoTempTwelbeOLabel: UILabel!
+    @IBOutlet var dayTwoTempSixAfternoonLabel: UILabel!
     
+    @IBOutlet var dayThreeWeekDay: UILabel!
+    @IBOutlet var dayThreeTempMidnightLabel: UILabel!
+    @IBOutlet var dayThreeTempSixOLabel: UILabel!
+    @IBOutlet var dayThreeTempTwelveOLabel: UILabel!
+    @IBOutlet var dayThreeTempSixAfternoonLabel: UILabel!
     
+    @IBOutlet var dayFourWeekDay: UILabel!
+    @IBOutlet var dayFourTempMidnightLabel: UILabel!
+    @IBOutlet var dayFourOneTemSixOLabel: UILabel!
+    @IBOutlet var dayFourTempTwelveOLabel: UILabel!
+    @IBOutlet var dayFourTempSixAfternoonLabel: UILabel!
     
+    var labelsBox: Array<Array<UILabel>> = []
+    var firstLabelBox: Array<UILabel> = []
+    var secondLabelBox: Array<UILabel> = []
+    var thirdLabelBox: Array<UILabel> = []
+    var fourthLabelBox: Array<UILabel> = []
     
+    var forecastArrayFromMainVC: Array<Forecast> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    //    let forecast = ForecastForTomorrow()
-        //fillDataWithGivenApi(forecast: forecast, apiUrl: "http://api.openweathermap.org/data/2.5/forecast?q=Krakow&appid=e3eeed175d5b660c006531bcb3a0117e")
-      //   fillDataWithGivenApi(forecast: forecast, apiUrl: "http://samples.openweathermap.org/data/2.5/forecast/daily?q=M%C3%BCnchen,DE&appid=b6907d289e10d714a6e88b30761fae22")
+        selectDesiredHours()
+    }
+ 
+    func selectDesiredHours(){
+        var date = Date()
+        let dateFormatterE = DateFormatter()
+        let dateFormatter = DateFormatter()
+        date = Calendar.current.date(byAdding: .day, value: +1, to: date)!
+        dateFormatterE.dateFormat = "EEEE"
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        var dateString = dateFormatter.string(from: date)
+        firstLabelBox = [dayOneTempMidnightLabel,dayOneTempSixOLabel,dayOneTempTwelveOLabel,dayOnTempSixAfternoonLabel,dayOneWeekDay]
+        secondLabelBox = [dayTwoTempMidnightLabel,dayTwoTemSixOLabel,dayTwoTempTwelbeOLabel,dayTwoTempSixAfternoonLabel,dayTwoWeekDay]
+        thirdLabelBox = [dayThreeTempMidnightLabel,dayThreeTempSixOLabel,dayThreeTempTwelveOLabel,dayThreeTempSixAfternoonLabel,dayThreeWeekDay]
+        fourthLabelBox = [dayFourTempMidnightLabel,dayFourOneTemSixOLabel,dayFourTempTwelveOLabel,dayFourTempSixAfternoonLabel,dayFourWeekDay]
+        
+        labelsBox.append(firstLabelBox)
+        labelsBox.append(secondLabelBox)
+        labelsBox.append(thirdLabelBox)
+        labelsBox.append(fourthLabelBox)
+        
+        var i = 1
+        var yCoordinate = 110
+        for singleWeatherParam in forecastArrayFromMainVC{
+            
+            if ((singleWeatherParam.date?.hasPrefix(dateString))! && i<5) {
 
-      //  var ArrayOfForecast = [forecastOneAhead, forecastTwoAhead, forecastThreeAhead, forecastFourAhead]
-        
-    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
-        
-     //   fillDataWithGivenApi(forecast: forecast, apiUrl: "http://samples.openweathermap.org/data/2.5/forecast?q=M%C3%BCnchen,DE&appid=b6907d289e10d714a6e88b30761fae22")
-        
-    }
-    
-    
-    func fillLabelOnUI() {
-        
-    }
-    
-    /*
-    func fillDataWithGivenApi(forecast: ForecastForTomorrow,apiUrl: String){
-        
-        let url = NSURL(string: apiUrl)
-        URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
-            if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
-                if let list = jsonObj!.value(forKey: "list") as? NSArray {
-                    for itemList in list {
-                        if let listDict = itemList as? NSDictionary {
-                            if let tempDict = listDict.value(forKey: "temp") as? NSDictionary {
-                                if let day = tempDict.value(forKey: "day") as? Double {
-                                    forecast.temperature = day
-                                    print("A")
-                                }
-                             
-                            }
-
-                            if let weatherArr = listDict.value(forKey: "weather") as? NSArray {
-                                for singleWeather in weatherArr {
-                                    if let weather = singleWeather as? NSDictionary{
-                                        if let main = weather.value(forKey: "main") as? String {
-                                            forecast.state = main
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                selectLabelToAccurateDate(count: i)[4].text = dateFormatterE.string(from: date)
+                if(singleWeatherParam.date?.hasSuffix("00:00:00"))!{
+                    displayImageWithSpecificStateAndPosition(imageName: displayProperIconToWeatherState(weatherParam: singleWeatherParam), xParam: 110, yParam: yCoordinate)
+                    selectLabelToAccurateDate(count: i)[0].text = transposeWeatherParamToStringInCelcius(temp: singleWeatherParam.temperature!)
+                } else if(singleWeatherParam.date?.hasSuffix("06:00:00"))!{
+                    displayImageWithSpecificStateAndPosition(imageName: displayProperIconToWeatherState(weatherParam: singleWeatherParam), xParam: 160, yParam: yCoordinate)
+                    selectLabelToAccurateDate(count: i)[1].text = transposeWeatherParamToStringInCelcius(temp: singleWeatherParam.temperature!)
+                } else if(singleWeatherParam.date?.hasSuffix("12:00:00"))!{
+                    displayImageWithSpecificStateAndPosition(imageName: displayProperIconToWeatherState(weatherParam: singleWeatherParam), xParam: 210, yParam: yCoordinate)
+                    selectLabelToAccurateDate(count: i)[2].text = transposeWeatherParamToStringInCelcius(temp: singleWeatherParam.temperature!)
+                } else if(singleWeatherParam.date?.hasSuffix("18:00:00"))!{
+                    displayImageWithSpecificStateAndPosition(imageName: displayProperIconToWeatherState(weatherParam: singleWeatherParam), xParam: 260, yParam: yCoordinate)
+                    selectLabelToAccurateDate(count: i)[3].text = transposeWeatherParamToStringInCelcius(temp: singleWeatherParam.temperature!)
+                    date = Calendar.current.date(byAdding: .day, value: +1, to: date)!
+                    dateString = dateFormatter.string(from: date)
+                    i += 1
+                    yCoordinate += 75
                 }
             }
-        }).resume()
+        }
     }
-
-    */
     
-    
-    /*
-    func fillDataWithGivenApi(forecast: ForecastForTomorrow,apiUrl: String){
-        
-        let RFC3339DateFormatter = DateFormatter()
-        RFC3339DateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
-        var date = Date().noon
-        var dateString = RFC3339DateFormatter.string(from: date)
-        
-        // print(dateString)
-        
-        print(RFC3339DateFormatter.weekdaySymbols[Calendar.current.component(.weekdayOrdinal, from: date)])
-        print(dateString)
-        date = Calendar.current.date(byAdding: .day, value: +1, to: date)!
-        dateString = RFC3339DateFormatter.string(from: date)
-        print(dateString)
-        
-        
-        
-        var date2 = Date().oneDayAhead
-        print(RFC3339DateFormatter.weekdaySymbols[Calendar.current.component(.weekdayOrdinal, from: date2)])
-        print(dateString)
-        date = Calendar.current.date(byAdding: .day, value: +1, to: date)!
-        dateString = RFC3339DateFormatter.string(from: date)
-        
-        let url = NSURL(string: apiUrl)
-        URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
-            
-            if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
-            
-                if let list = jsonObj!.value(forKey: "list") as? NSArray {
-                    for itemList in list {
-                        
-                        print(list.count)
-                        
-                        var isDesiredInForecast = false
-                        
-                        if let listDict = itemList as? NSDictionary {
-                            
-                            
-                            
-                            if let dateTime = listDict.value(forKey: "dt_txt") as? String {
-                               // print(dateTime + " ***")
-                                if (dateTime == dateString ){
-                                    //print("bb")
-
-                                    isDesiredInForecast = true
-                                //    print(RFC3339DateFormatter.weekdaySymbols[Calendar.current.component(.weekdayOrdinal, from: date)])
-                                 //   print(dateString)
-                                    date = Calendar.current.date(byAdding: .day, value: +1, to: date)!
-                                    dateString = RFC3339DateFormatter.string(from: date)
-                                  
-                                }
-                            }
-                            if(isDesiredInForecast){
-                                if let mainDict = listDict.value(forKey: "main") as? NSDictionary {
-                                    if let temp = mainDict.value(forKey: "temp") as? Double {
-                                        // forecast.temperature = temp
-                                        //print(temp)
-                                    }
-                                }
-                                if let weatherArr = listDict.value(forKey: "weather") as? NSArray {
-                                    for singleWeather in weatherArr {
-                                        if let weather = singleWeather as? NSDictionary{
-                                            if let main = weather.value(forKey: "main") as? String {
-                                                // forecast.state = main
-                                                //print(main)
-                                            }
-                                        }
-                                    }
-                                }
-                                
-                            }
-                        }
-                    }
-                }
+    func displayProperIconToWeatherState(weatherParam: Forecast) -> String {
+        switch(weatherParam.state!){
+        case "clear sky":
+            if(weatherParam.date?.hasSuffix("00:00:00"))!{
+                return "clear-night"
+            } else {
+                return "clear"
             }
-        }).resume()
+        case "scattered clouds","broken clouds","scattered clouds","few clouds","overcast clouds":
+            if(weatherParam.date?.hasSuffix("00:00:00"))!{
+                return "cloudy-night"
+            } else {
+                return "cloudy"
+            }
+        case "light rain","moderate rain":
+            return "rain"
+        case "light snow":
+            return "snow"
+        default:
+            return "default"
+        }
     }
- */
+
+    func selectLabelToAccurateDate(count: Int) -> Array<UILabel>{
+        switch(count) {
+        case 1:
+            return labelsBox[0]
+        case 2:
+            return labelsBox[1]
+        case 3:
+            return labelsBox[2]
+        case 4:
+            return labelsBox[3]
+        default:
+            print("invalid number of forecast returning an error...")
+            return labelsBox[-1]
+        }
+    }
     
+    func transposeWeatherParamToStringInCelcius(temp: Double) -> String{
+        let temperaturToReturn = String(describing: (Double(round( 10 * (temp - 273.15))/10))) + "°c"
+        return temperaturToReturn
+    }
     
+    func displayImageWithSpecificStateAndPosition(imageName: String,xParam: Int, yParam: Int) {
+        var image: UIImage = UIImage(named: imageName)!
+        let dayOneAheadImage = UIImageView(image: image)
+        dayOneAheadImage.frame = CGRect(origin: CGPoint(x: xParam,y :yParam), size: CGSize(width: 30, height: 30))
+        self.view.addSubview(dayOneAheadImage)
+        
+    }
 }
-
-
-
-
-
-
-
-
-
-
-

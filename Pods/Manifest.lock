@@ -1,12 +1,20 @@
 PODS:
+  - MBProgressHUD (1.1.0)
   - ObjectMapper (2.2.9)
 
 DEPENDENCIES:
+  - MBProgressHUD (~> 1.0)
   - ObjectMapper (~> 2.2.8)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - MBProgressHUD
+    - ObjectMapper
+
 SPEC CHECKSUMS:
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   ObjectMapper: 63cfe41bc6f8e7c8f44344c49901b8ae7de14c52
 
-PODFILE CHECKSUM: 37531f03b40b9c7239a08f0cc9ea8c54a9a84a58
+PODFILE CHECKSUM: 816ee069b7fda36301ad56e88b5bf2cae7f3379d
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3

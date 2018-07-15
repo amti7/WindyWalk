@@ -1,0 +1,205 @@
+//
+//  ForecastForTomorrowViewController.swift
+//  WindyWalk
+//
+//  Created by Kamil Gacek on 21/02/2018.
+//  Copyright © 2018 Kamil Gacek. All rights reserved.
+//
+
+import Foundation
+import UIKit
+
+class MainViewController: UIViewController {
+
+@IBOutlet var cityNameLabel: UILabel!
+@IBOutlet var dateLabel: UILabel!
+@IBOutlet var stateLabel: UILabel!
+@IBOutlet var temperatureLabel: UILabel!
+@IBOutlet var humidityLabel: UILabel!
+@IBOutlet var downFallLabel: UILabel!
+@IBOutlet var downFallValueLabel: UILabel!
+@IBOutlet var windLabel: UILabel!
+
+var activityIndicator:UIActivityIndicatorView = UIActivityIndicatorView()
+
+var forecast: ExtendedForecast?
+var weekForecast: WeekForecast?
+
+override func viewDidLoad() {
+
+launchActivityIndicator()
+retrieveParamsByObjectMapper(path: "http://api.openweathermap.org/data/2.5/forecast?q=Krakow&appid=e3eeed175d5b660c006531bcb3a0117e")
+
+}
+
+override func viewWillAppear(_ animated: Bool) {
+
+}
+
+override func viewDidAppear(_ animated: Bool) {
+
+}
+
+func retrieveParamsByObjectMapper( path: String) {
+
+guard let url = URL(string: path) else {
+return
+}
+
+URLSession.shared.dataTask(with: url) { data, response, error in
+guard let data = data else {
+return
+}
+
+do {
+guard let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? Dictionary<String,Any> else {
+print("error")
+return
+}
+
+
+self.weekForecast = WeekForecast(JSON: json)
+
+if let forecast = ExtendedForecast(JSON: json) {
+self.fillUIWithObtainedData(forecast: forecast)
+
+var iconType = self.displayProperIconToWeatherState(extForecast: forecast)
+//  showActivityIndicatory(uiView: self.view)
+self.displayImageWithSpecificStateAndPosition(imageName: iconType, xParam: 100, yParam: 100)
+
+//self.displayImageWithSpecificStateAndPosition(imageName: self.displayProperIconToWeatherState(), xParam: 100, yParam: 100)
+//                    var i = 0
+//                    while(i<1000){
+//                        print(i)
+//                        sleep(1)
+//                        if (forecast != nil) {
+//                            print("@#(*$&@#(*$&(@#*&$(@#*&$(*@#&$(*@#&$(*#@&(")
+//                            self.displayImageWithSpecificStateAndPosition(imageName: self.displayProperIconToWeatherState(weatherParam: forecast), xParam: 110, yParam: 110)
+//                        }
+//                        i += 1
+//                    }
+}
+
+
+} catch {
+fatalError("Error: Unnable to parse JSON...")
+}
+}.resume()
+}
+
+
+override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+let DestViewController: DetailsViewController = segue.destination as! DetailsViewController
+
+DestViewController.forecastArrayFromMainVC = (weekForecast?.forecastArray)!
+
+}
+
+func fillUIWithObtainedData(forecast: ExtendedForecast){
+temperatureLabel.text = String(transposeWeatherParamToStringInCelcius(temp: forecast.temperature!))
+stateLabel.text = forecast.state!
+windLabel.text = String(describing: forecast.wind!) + " m/s"
+dateLabel.text = forecast.date
+cityNameLabel.text = String(forecast.cityName!)
+downFallLabel.text = forecast.typeOfDownfall
+downFallValueLabel.text = String(describing: forecast.downfall) + " mm"
+humidityLabel.text = String(forecast.humidity!) + " %"
+
+}
+
+func transposeWeatherParamToStringInCelcius(temp: Double) -> String{
+let temperaturToReturn = String(describing: (Double(round( 10 * (temp - 273.15))/10))) + "'c"
+return temperaturToReturn
+}
+
+
+func displayImageWithSpecificStateAndPosition(imageName: String,xParam: Int, yParam: Int) {
+let image: UIImage = UIImage(named: imageName)!
+let dayOneAheadImage = UIImageView(image: image)
+dayOneAheadImage.frame = CGRect(origin: CGPoint(x: xParam,y :yParam), size: CGSize(width: 100, height: 100))
+self.view.addSubview(dayOneAheadImage)
+
+}
+
+func displayProperIconToWeatherState(extForecast: ExtendedForecast) -> String {
+
+var returnString = "A"
+print(extForecast.cityName ?? "NULL CIUL" )
+
+if let weatherParam = Optional(extForecast) {
+switch(weatherParam.state!){
+case "clear sky":
+if(weatherParam.date?.hasSuffix("00:00:00"))!{
+returnString =  "clear-night"
+} else {
+returnString =  "clear"
+}
+case "scattered clouds","broken clouds","scattered clouds","few clouds","overcast clouds":
+if(weatherParam.date?.hasSuffix("00:00:00"))!{
+returnString =  "cloudy-night"
+} else {
+returnString =  "cloudy"
+}
+case "light rain","moderate rain": // + other rains
+returnString =  "rain"
+case "light snow":
+returnString =  "snow"
+default:
+returnString =  "default"
+}
+}
+print(returnString)
+return returnString
+}
+
+//    func displayProperIconToWeatherState() -> String {
+//        var returnString: String?
+//        if let weatherParam = self.forecast {
+//            switch(weatherParam.state!){
+//            case "clear sky":
+//                if(weatherParam.date?.hasSuffix("00:00:00"))!{
+//                    returnString =  "clear-night"
+//                } else {
+//                    returnString =  "clear"
+//                }
+//            case "scattered clouds","broken clouds","scattered clouds","few clouds","overcast clouds":
+//                if(weatherParam.date?.hasSuffix("00:00:00"))!{
+//                    returnString =  "cloudy-night"
+//                } else {
+//                    returnString =  "cloudy"
+//                }
+//            case "light rain","moderate rain": // + other rains
+//                returnString =  "rain"
+//            case "light snow":
+//                returnString =  "snow"
+//            default:
+//                returnString =  "default"
+//            }
+//        }
+//        print(returnString)
+//        return returnString!
+//    }
+
+//    func showActivityIndicatory(uiView: UIView) {
+//        var actInd: UIActivityIndicatorView = UIActivityIndicatorView()
+//        actInd.frame = CGRect(origin: CGPoint(x: 0,y: 0), size: CGSize(width: 40, height: 40));
+//        actInd.center = uiView.center
+//        actInd.hidesWhenStopped = true
+//        actInd.activityIndicatorViewStyle =
+//            UIActivityIndicatorViewStyle.whiteLarge
+//        uiView.addSubview(actInd)
+//        activityIndicator.startAnimating()
+//    }
+
+func launchActivityIndicator() {
+
+activityIndicator.center = self.view.center
+activityIndicator.hidesWhenStopped = true
+activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+view.addSubview(activityIndicator)
+
+activityIndicator.startAnimating()
+UIApplication.shared.beginIgnoringInteractionEvents()
+}
+
+}
