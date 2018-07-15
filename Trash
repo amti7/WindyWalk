@@ -1,0 +1,359 @@
+
+//print(forecast)
+
+
+//let forecast = Mapper<Forecast>().map(NSDictionary: jsonDict)
+
+
+//let forecast = Forecast(map: jsonDict)
+//let temp = forecast
+
+
+
+//  let forecast =
+
+
+
+//if let dataDict = data as? NSDictionary {
+//   if let json = try? JSON(data: data!) {
+
+//     if let msg = json["cod"].stringValue as? String {
+//        print(msg  + ":  ******" )
+//   }
+
+/*
+for itemList in json["list"].arrayValue {
+if let dt = itemList["dt"].stringValue {
+if let day = temp["day"].stringValue {
+print(dt + " ******")
+}
+}
+}
+*/
+//    }
+// }
+//if let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
+//    }
+//}).resume()
+
+
+
+/*
+func fillDataWithGivenApi(forecast: ForecastForTomorrow,apiUrl: String){
+
+var currentDate =  "2018-02-23 15:00:00"
+
+let url = NSURL(string: apiUrl)
+URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
+if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
+if let list = jsonObj!.value(forKey: "list") as? NSArray {
+for itemList in list {
+
+var isDesiredInForecast = false
+
+if let listDict = itemList as? NSDictionary {
+if let dateTime = listDict.value(forKey: "dt_txt") as? String {
+if (dateTime == currentDate ){
+forecast.date = dateTime
+isDesiredInForecast = true
+}
+}
+if(isDesiredInForecast){
+if let tempDict = listDict.value(forKey: "temp") as? NSDictionary {
+if let day = tempDict.value(forKey: "day") as? Double {
+forecast.temperature = day
+print(day)
+}
+if let humidity = tempDict.value(forKey: "humidity") as? Double {
+forecast.humidity = humidity
+}
+}
+
+if let weatherArr = listDict.value(forKey: "weather") as? NSArray {
+for singleWeather in weatherArr {
+if let weather = singleWeather as? NSDictionary{
+if let main = weather.value(forKey: "main") as? String {
+forecast.state = main
+}
+}
+}
+}
+if let rainDict = listDict.value(forKey: "rain") as? NSDictionary {
+if let rain = rainDict.value(forKey: "3h") as? Double {
+forecast.rain = rain
+}
+}
+}
+}
+}
+}
+if let city = jsonObj!.value(forKey: "city") as? NSDictionary {
+if let cityName = city.value(forKey: "name") as? String {
+forecast.name = cityName
+}
+}
+}
+}).resume()
+}
+*/
+
+
+
+
+
+/*
+func goDeeper<T: AnyObject, U: AnyObject>(key: String, objectToParse: U) {
+if let property = objectToParse.value(forKey: key) as? T {
+print(property)
+}
+}*/
+/*
+func genericExample<T: AnyObject>(key: T, objectToParse: T){
+if let property = objectToParse.value(forKey: key) as? T {
+
+} else {
+print("EE")
+}
+}
+*/
+
+
+
+
+
+
+
+/*
+override func viewDidLayoutSubviews() {
+provideParametersInLabels()
+}
+
+func fillDataWithGivenApi(forecast: Forecast,apiUrl: String){
+
+var currentDate =  "2018-02-23 15:00:00"
+
+let url = NSURL(string: apiUrl)
+URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
+if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
+if let list = jsonObj!.value(forKey: "list") as? NSArray {
+for itemList in list {
+
+var isDesiredInForecast = false
+
+if let listDict = itemList as? NSDictionary {
+if let dateTime = listDict.value(forKey: "dt_txt") as? String {
+if (dateTime == currentDate ){
+forecast.date = dateTime
+isDesiredInForecast = true
+}
+}
+if(isDesiredInForecast){
+if let tempDict = listDict.value(forKey: "temp") as? NSDictionary {
+if let day = tempDict.value(forKey: "day") as? Double {
+forecast.temperature = day
+print(day)
+}
+if let humidity = tempDict.value(forKey: "humidity") as? Double {
+forecast.humidity = humidity
+}
+}
+
+if let weatherArr = listDict.value(forKey: "weather") as? NSArray {
+for singleWeather in weatherArr {
+if let weather = singleWeather as? NSDictionary{
+if let main = weather.value(forKey: "main") as? String {
+forecast.state = main
+}
+}
+}
+}
+if let rainDict = listDict.value(forKey: "rain") as? NSDictionary {
+if let rain = rainDict.value(forKey: "3h") as? Double {
+forecast.rain = rain
+}
+}
+}
+}
+}
+}
+if let city = jsonObj!.value(forKey: "city") as? NSDictionary {
+if let cityName = city.value(forKey: "name") as? String {
+forecast.name = cityName
+}
+}
+}
+}).resume()
+}
+*/
+/*
+func provideParametersInLabels() {
+if let city = forecast.name {
+cityNameLabel.text = city
+}
+if let date = forecast.date {
+dateLabel.text = date
+}
+if let state = forecast.state {
+stateLabel.text = state
+}
+if let temperature = forecast.temperature {
+temperatureLabel.text = String(temperature)
+}
+if let humidity = forecast.humidity {
+humidityLabel.text = String(humidity)
+}
+if let rain = forecast.rain {
+rainLabel.text = String(rain)
+}
+}
+*/
+/*
+func validateForecastParameter<T>(parameter: T,label: UILabel){
+if var param = parameter {
+label.text = param
+}  // TODO
+}
+*/
+
+
+/*
+func fillDataWithGivenApi(forecast: ForecastForTomorrow,apiUrl: String){
+
+let url = NSURL(string: apiUrl)
+URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
+if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
+if let list = jsonObj!.value(forKey: "list") as? NSArray {
+for itemList in list {
+if let listDict = itemList as? NSDictionary {
+if let tempDict = listDict.value(forKey: "temp") as? NSDictionary {
+if let day = tempDict.value(forKey: "day") as? Double {
+forecast.temperature = day
+print("A")
+}
+
+}
+
+if let weatherArr = listDict.value(forKey: "weather") as? NSArray {
+for singleWeather in weatherArr {
+if let weather = singleWeather as? NSDictionary{
+if let main = weather.value(forKey: "main") as? String {
+forecast.state = main
+}
+}
+}
+}
+}
+}
+}
+}
+}).resume()
+}
+
+*/
+
+
+/*
+func fillDataWithGivenApi(forecast: ForecastForTomorrow,apiUrl: String){
+
+let RFC3339DateFormatter = DateFormatter()
+RFC3339DateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
+var date = Date().noon
+var dateString = RFC3339DateFormatter.string(from: date)
+
+// print(dateString)
+
+print(RFC3339DateFormatter.weekdaySymbols[Calendar.current.component(.weekdayOrdinal, from: date)])
+print(dateString)
+date = Calendar.current.date(byAdding: .day, value: +1, to: date)!
+dateString = RFC3339DateFormatter.string(from: date)
+print(dateString)
+
+
+
+var date2 = Date().oneDayAhead
+print(RFC3339DateFormatter.weekdaySymbols[Calendar.current.component(.weekdayOrdinal, from: date2)])
+print(dateString)
+date = Calendar.current.date(byAdding: .day, value: +1, to: date)!
+dateString = RFC3339DateFormatter.string(from: date)
+
+let url = NSURL(string: apiUrl)
+URLSession.shared.dataTask(with: (url as URL?)!, completionHandler: {(data, response, error) -> Void in
+
+if let jsonObj = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSDictionary {
+
+if let list = jsonObj!.value(forKey: "list") as? NSArray {
+for itemList in list {
+
+print(list.count)
+
+var isDesiredInForecast = false
+
+if let listDict = itemList as? NSDictionary {
+
+
+
+if let dateTime = listDict.value(forKey: "dt_txt") as? String {
+// print(dateTime + " ***")
+if (dateTime == dateString ){
+//print("bb")
+
+isDesiredInForecast = true
+//    print(RFC3339DateFormatter.weekdaySymbols[Calendar.current.component(.weekdayOrdinal, from: date)])
+//   print(dateString)
+date = Calendar.current.date(byAdding: .day, value: +1, to: date)!
+dateString = RFC3339DateFormatter.string(from: date)
+
+}
+}
+if(isDesiredInForecast){
+if let mainDict = listDict.value(forKey: "main") as? NSDictionary {
+if let temp = mainDict.value(forKey: "temp") as? Double {
+// forecast.temperature = temp
+//print(temp)
+}
+}
+if let weatherArr = listDict.value(forKey: "weather") as? NSArray {
+for singleWeather in weatherArr {
+if let weather = singleWeather as? NSDictionary{
+if let main = weather.value(forKey: "main") as? String {
+// forecast.state = main
+//print(main)
+}
+}
+}
+}
+
+}
+}
+}
+}
+}
+}).resume()
+}
+*/
+
+
+
+//        var date = Date()
+//        print(date)
+//        date = Calendar.current.date(byAdding: .day, value: +1, to: date)!
+//        var dateForNameOfTheWeekday = Calendar.current.date(byAdding: .day, value: +5, to: date)!
+//
+//        dateForNextDay = RFC3339DateFormatter.string(from: date)
+//        print(dateForNextDay)
+
+let date2 = Date()
+print(date2)
+print(RFC3339DateFormatter.weekdaySymbols[Calendar.current.component(.weekdayOrdinal, from: date2)])
+
+//        let myCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
+//        let myComponents = myCalendar.components(.weekday, from: date2)
+//        print(myComponents.weekday)
+
+let dateformatter = DateFormatter()
+dateformatter.dateFormat = "EEEE"
+
+
+
+

@@ -2,6 +2,15 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:mainCopy">
+   </FileRef>
+   <FileRef
+      location = "group:Trash">
+   </FileRef>
+   <FileRef
+      location = "group:introCopy">
+   </FileRef>
+   <FileRef
       location = "group:WindyWalk.xcodeproj">
    </FileRef>
    <FileRef

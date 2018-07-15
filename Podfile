@@ -7,4 +7,5 @@ target 'WindyWalk' do
 
   # Pods for WindyWalk
   pod 'ObjectMapper', '~> 2.2.8’
+  pod 'MBProgressHUD', '~> 1.0'
 end
