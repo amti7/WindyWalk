@@ -24,7 +24,8 @@ class MainViewController: UIViewController {
     @IBOutlet var downFallLabel: UILabel!
     @IBOutlet var downFallValueLabel: UILabel!
     @IBOutlet var windLabel: UILabel!
-
+    @IBOutlet weak var mainImageView: UIImageView!
+    
     var forecast: ExtendedForecast?
     var forecastArray: Array<Forecast> = []
     
@@ -34,9 +35,7 @@ class MainViewController: UIViewController {
         } catch ErrorType.ForecastDataNotObtained(let description) {
             print(description)
         }
-        var iconType = self.displayProperIconToWeatherState(extForecast: forecast!)
-        self.displayImageWithSpecificStateAndPosition(imageName: iconType, xParam: 115, yParam: 170)
-
+        displayProperIconToWeatherState(extForecast: forecast!,weatherIconImage:  mainImageView)
     }
 
     func fillUIWithObtainedData(forecast: ExtendedForecast){
@@ -56,38 +55,33 @@ class MainViewController: UIViewController {
         return temperaturToReturn
     }
     
-    func displayImageWithSpecificStateAndPosition(imageName: String,xParam: Int, yParam: Int) {
-        let image: UIImage = UIImage(named: imageName)!
-        let dayOneAheadImage = UIImageView(image: image)
-        dayOneAheadImage.frame = CGRect(origin: CGPoint(x: xParam,y :yParam), size: CGSize(width: 80, height: 80))
-        self.view.addSubview(dayOneAheadImage)
-    }
-    
-    func displayProperIconToWeatherState(extForecast: ExtendedForecast) -> String {
-        var returnString = ""
+    func displayProperIconToWeatherState(extForecast: ExtendedForecast, weatherIconImage: UIImageView){
+        var weatherState = ""
         if let weatherParam = Optional(extForecast) {
             switch(weatherParam.state!){
             case "clear sky":
                 if(weatherParam.date?.hasSuffix("00:00:00"))!{
-                    returnString =  "clear-night"
+                    weatherState =  "clear-night"
                 } else {
-                    returnString =  "clear"
+                    weatherState =  "clear"
                 }
             case "scattered clouds","broken clouds","scattered clouds","few clouds","overcast clouds":
                 if(weatherParam.date?.hasSuffix("00:00:00"))!{
-                    returnString =  "cloudy-night"
+                    weatherState =  "cloudy-night"
                 } else {
-                    returnString =  "cloudy"
+                    weatherState =  "cloudy"
                 }
             case "light rain","moderate rain":
-                returnString =  "rain"
+                weatherState =  "rain"
             case "light snow":
-                returnString =  "snow"
+                weatherState =  "snow"
             default:
-                returnString =  "default"
+                weatherState =  "default"
             }
         }
-        return returnString
+        let image: UIImage = UIImage(named: weatherState)!
+        weatherIconImage.image = image
+        self.view.addSubview(weatherIconImage)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -17,7 +17,7 @@ class IntroViewController: UIViewController {
     
     var forecast: ExtendedForecast?
     var weekForecast: WeekForecast?
-    var activityIndicator:UIActivityIndicatorView = UIActivityIndicatorView()    
+    var activityIndicator:UIActivityIndicatorView = UIActivityIndicatorView()
     
     @IBAction func urlWithGivenCity(_ sender: Any) {
         var cityName = cityNameTextField.text
