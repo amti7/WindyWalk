@@ -53,7 +53,7 @@ class IntroViewController: UIViewController {
                 if let forecasT = ExtendedForecast(JSON: json) {
                     self?.forecast = forecasT
                     DispatchQueue.main.async {
-                        if(self?.forecast?.temperature != nil) {
+                        if(self?.forecast?.temperature != nil && self?.weekForecast?.forecastArray[0].temperature != nil) {
                             self?.performSegue(withIdentifier: "IntroSegue", sender: self)
                         } else {
                             let alert = UIAlertController(title: "Error", message: "The city is not existing in the system.",preferredStyle: .alert)

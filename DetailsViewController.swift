@@ -15,32 +15,39 @@ class DetailsViewController: UIViewController {
     @IBOutlet var dayOneTempMidnightLabel: UILabel!
     @IBOutlet var dayOneTempSixOLabel: UILabel!
     @IBOutlet var dayOneTempTwelveOLabel: UILabel!
-    @IBOutlet var dayOnTempSixAfternoonLabel: UILabel!
-    
+    @IBOutlet var dayOneTempSixAfternoonLabel: UILabel!
     @IBOutlet var dayTwoWeekDay: UILabel!
     @IBOutlet var dayTwoTempMidnightLabel: UILabel!
-    @IBOutlet var dayTwoTemSixOLabel: UILabel!
-    @IBOutlet var dayTwoTempTwelbeOLabel: UILabel!
+    @IBOutlet var dayTwoTempSixOLabel: UILabel!
+    @IBOutlet var dayTwoTempTwelveOLabel: UILabel!
     @IBOutlet var dayTwoTempSixAfternoonLabel: UILabel!
-    
     @IBOutlet var dayThreeWeekDay: UILabel!
     @IBOutlet var dayThreeTempMidnightLabel: UILabel!
     @IBOutlet var dayThreeTempSixOLabel: UILabel!
     @IBOutlet var dayThreeTempTwelveOLabel: UILabel!
     @IBOutlet var dayThreeTempSixAfternoonLabel: UILabel!
-    
     @IBOutlet var dayFourWeekDay: UILabel!
     @IBOutlet var dayFourTempMidnightLabel: UILabel!
-    @IBOutlet var dayFourOneTemSixOLabel: UILabel!
+    @IBOutlet var dayFourTempSixOLabel: UILabel!
     @IBOutlet var dayFourTempTwelveOLabel: UILabel!
     @IBOutlet var dayFourTempSixAfternoonLabel: UILabel!
-    
-    var labelsBox: Array<Array<UILabel>> = []
-    var firstLabelBox: Array<UILabel> = []
-    var secondLabelBox: Array<UILabel> = []
-    var thirdLabelBox: Array<UILabel> = []
-    var fourthLabelBox: Array<UILabel> = []
-    
+    @IBOutlet weak var imageViewDayOneMidnight: UIImageView!
+    @IBOutlet weak var imageViewDayOneSixO: UIImageView!
+    @IBOutlet weak var imageViewDayOneTwelve: UIImageView!
+    @IBOutlet weak var imageViewDayOneSixAfternoon: UIImageView!
+    @IBOutlet weak var imageViewDayTwoMidnight: UIImageView!
+    @IBOutlet weak var imageViewDayTwoSixO: UIImageView!
+    @IBOutlet weak var imageViewDayTwoTwelve: UIImageView!
+    @IBOutlet weak var imageViewDayTwoSixAfternoon: UIImageView!
+    @IBOutlet weak var imageViewDayThreeMidnight: UIImageView!
+    @IBOutlet weak var imageViewDayThreeSixO: UIImageView!
+    @IBOutlet weak var imageViewDayThreeTwelve: UIImageView!
+    @IBOutlet weak var imageViewDayThreeSixAfternoon: UIImageView!
+    @IBOutlet weak var imageViewDayFourMidnight: UIImageView!
+    @IBOutlet weak var imageViewDayFourSixO: UIImageView!
+    @IBOutlet weak var imageViewDayFourTwelve: UIImageView!
+    @IBOutlet weak var imageViewDayFourSixAfternoon: UIImageView!
+
     var forecastArrayFromMainVC: Array<Forecast> = []
     
     override func viewDidLoad() {
@@ -50,93 +57,73 @@ class DetailsViewController: UIViewController {
  
     func selectDesiredHours(){
         var date = Date()
-        let dateFormatterE = DateFormatter()
         let dateFormatter = DateFormatter()
         date = Calendar.current.date(byAdding: .day, value: +1, to: date)!
-        dateFormatterE.dateFormat = "EEEE"
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        
         var dateString = dateFormatter.string(from: date)
-        firstLabelBox = [dayOneTempMidnightLabel,dayOneTempSixOLabel,dayOneTempTwelveOLabel,dayOnTempSixAfternoonLabel,dayOneWeekDay]
-        secondLabelBox = [dayTwoTempMidnightLabel,dayTwoTemSixOLabel,dayTwoTempTwelbeOLabel,dayTwoTempSixAfternoonLabel,dayTwoWeekDay]
-        thirdLabelBox = [dayThreeTempMidnightLabel,dayThreeTempSixOLabel,dayThreeTempTwelveOLabel,dayThreeTempSixAfternoonLabel,dayThreeWeekDay]
-        fourthLabelBox = [dayFourTempMidnightLabel,dayFourOneTemSixOLabel,dayFourTempTwelveOLabel,dayFourTempSixAfternoonLabel,dayFourWeekDay]
         
-        labelsBox.append(firstLabelBox)
-        labelsBox.append(secondLabelBox)
-        labelsBox.append(thirdLabelBox)
-        labelsBox.append(fourthLabelBox)
+        let dayOneArray = [[dayOneTempMidnightLabel,imageViewDayOneMidnight],[dayOneTempSixOLabel,imageViewDayOneSixO],[dayOneTempTwelveOLabel,imageViewDayOneTwelve],[dayOneTempSixAfternoonLabel,imageViewDayOneSixAfternoon]]
+        let dayTwoArray = [[dayTwoTempMidnightLabel,imageViewDayTwoMidnight],[dayTwoTempSixOLabel,imageViewDayTwoSixO],[dayTwoTempTwelveOLabel,imageViewDayTwoTwelve],[dayTwoTempSixAfternoonLabel,imageViewDayTwoSixAfternoon]]
+        let dayThreeArray = [[dayThreeTempMidnightLabel,imageViewDayThreeMidnight],[dayThreeTempSixOLabel,imageViewDayThreeSixO],[dayThreeTempTwelveOLabel,imageViewDayThreeTwelve],[dayThreeTempSixAfternoonLabel,imageViewDayThreeSixAfternoon]]
+        let dayFourArray = [[dayFourTempMidnightLabel,imageViewDayFourMidnight],[dayFourTempSixOLabel,imageViewDayFourSixO],[dayFourTempTwelveOLabel,imageViewDayFourTwelve],[dayFourTempSixAfternoonLabel,imageViewDayFourSixAfternoon]]
         
-        var i = 1
-        var yCoordinate = 110
-        for singleWeatherParam in forecastArrayFromMainVC{
-            
-            if ((singleWeatherParam.date?.hasPrefix(dateString))! && i<5) {
-
-                selectLabelToAccurateDate(count: i)[4].text = dateFormatterE.string(from: date)
-                if(singleWeatherParam.date?.hasSuffix("00:00:00"))!{
-                    displayImageWithSpecificStateAndPosition(imageName: displayProperIconToWeatherState(weatherParam: singleWeatherParam), xParam: 110, yParam: yCoordinate)
-                    selectLabelToAccurateDate(count: i)[0].text = transposeWeatherParamToStringInCelcius(temp: singleWeatherParam.temperature!)
-                } else if(singleWeatherParam.date?.hasSuffix("06:00:00"))!{
-                    displayImageWithSpecificStateAndPosition(imageName: displayProperIconToWeatherState(weatherParam: singleWeatherParam), xParam: 160, yParam: yCoordinate)
-                    selectLabelToAccurateDate(count: i)[1].text = transposeWeatherParamToStringInCelcius(temp: singleWeatherParam.temperature!)
-                } else if(singleWeatherParam.date?.hasSuffix("12:00:00"))!{
-                    displayImageWithSpecificStateAndPosition(imageName: displayProperIconToWeatherState(weatherParam: singleWeatherParam), xParam: 210, yParam: yCoordinate)
-                    selectLabelToAccurateDate(count: i)[2].text = transposeWeatherParamToStringInCelcius(temp: singleWeatherParam.temperature!)
-                } else if(singleWeatherParam.date?.hasSuffix("18:00:00"))!{
-                    displayImageWithSpecificStateAndPosition(imageName: displayProperIconToWeatherState(weatherParam: singleWeatherParam), xParam: 260, yParam: yCoordinate)
-                    selectLabelToAccurateDate(count: i)[3].text = transposeWeatherParamToStringInCelcius(temp: singleWeatherParam.temperature!)
-                    date = Calendar.current.date(byAdding: .day, value: +1, to: date)!
-                    dateString = dateFormatter.string(from: date)
-                    i += 1
-                    yCoordinate += 75
+        var daysArray = [dayOneArray,dayTwoArray,dayThreeArray,dayFourArray]
+        
+        var c = 0
+        print(dateString)
+        for singleWeatherParam in forecastArrayFromMainVC {
+            if ((singleWeatherParam.date?.hasPrefix(dateString))! && c<4) {
+                if singleWeatherParam.temperature != nil {
+                    if(singleWeatherParam.date?.hasSuffix("00:00:00"))!{
+                        temperatureInCelcius(temp: singleWeatherParam.temperature!, label: daysArray[c][0][0] as! UILabel)
+                        assignToWeatherStateIcon(weatherParam: singleWeatherParam, weatherIconImage: daysArray[c][0][1] as! UIImageView)
+                    } else if(singleWeatherParam.date?.hasSuffix("06:00:00"))!{
+                        temperatureInCelcius(temp: singleWeatherParam.temperature!, label: daysArray[c][1][0] as! UILabel)
+                        assignToWeatherStateIcon(weatherParam: singleWeatherParam, weatherIconImage: daysArray[c][1][1] as! UIImageView)
+                    } else if(singleWeatherParam.date?.hasSuffix("12:00:00"))!{
+                        temperatureInCelcius(temp: singleWeatherParam.temperature!, label: daysArray[c][2][0] as! UILabel)
+                        assignToWeatherStateIcon(weatherParam: singleWeatherParam, weatherIconImage: daysArray[c][2][1] as! UIImageView)
+                    } else if(singleWeatherParam.date?.hasSuffix("18:00:00"))!{
+                        temperatureInCelcius(temp: singleWeatherParam.temperature!, label: daysArray[c][3][0] as! UILabel)
+                        assignToWeatherStateIcon(weatherParam: singleWeatherParam, weatherIconImage: daysArray[c][3][1] as! UIImageView)
+                        date = Calendar.current.date(byAdding: .day, value: +1, to: date)!
+                        dateString = dateFormatter.string(from: date)
+                        c += 1
+                    }
                 }
             }
         }
     }
     
-    func displayProperIconToWeatherState(weatherParam: Forecast) -> String {
+    func assignToWeatherStateIcon(weatherParam: Forecast, weatherIconImage: UIImageView) {
+        var weatherState = ""
         switch(weatherParam.state!){
         case "clear sky":
             if(weatherParam.date?.hasSuffix("00:00:00"))!{
-                return "clear-night"
+                weatherState = "clear-night"
             } else {
-                return "clear"
+                weatherState = "clear"
             }
         case "scattered clouds","broken clouds","scattered clouds","few clouds","overcast clouds":
             if(weatherParam.date?.hasSuffix("00:00:00"))!{
-                return "cloudy-night"
+                weatherState = "cloudy-night"
             } else {
-                return "cloudy"
+                weatherState = "cloudy"
             }
         case "light rain","moderate rain":
-            return "rain"
+            weatherState = "rain"
         case "light snow":
-            return "snow"
+            weatherState = "snow"
         default:
-            return "default"
+            weatherState = "default"
         }
-    }
-
-    func selectLabelToAccurateDate(count: Int) -> Array<UILabel>{
-        switch(count) {
-        case 1:
-            return labelsBox[0]
-        case 2:
-            return labelsBox[1]
-        case 3:
-            return labelsBox[2]
-        case 4:
-            return labelsBox[3]
-        default:
-            print("invalid number of forecast returning an error...")
-            return labelsBox[-1]
-        }
+        let image: UIImage = UIImage(named: weatherState)!
+        weatherIconImage.image = image
+        self.view.addSubview(weatherIconImage)
     }
     
-    func transposeWeatherParamToStringInCelcius(temp: Double) -> String{
-        let temperaturToReturn = String(describing: (Double(round( 10 * (temp - 273.15))/10))) + "°c"
-        return temperaturToReturn
+    func temperatureInCelcius(temp: Double, label: UILabel){
+        label.text = String(describing: (Double(round( 10 * (temp - 273.15))/10))) + "°c"
     }
     
     func displayImageWithSpecificStateAndPosition(imageName: String,xParam: Int, yParam: Int) {
@@ -144,6 +131,5 @@ class DetailsViewController: UIViewController {
         let dayOneAheadImage = UIImageView(image: image)
         dayOneAheadImage.frame = CGRect(origin: CGPoint(x: xParam,y :yParam), size: CGSize(width: 30, height: 30))
         self.view.addSubview(dayOneAheadImage)
-        
     }
 }

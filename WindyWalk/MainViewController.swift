@@ -28,7 +28,7 @@ class MainViewController: UIViewController {
     
     var forecast: ExtendedForecast?
     var forecastArray: Array<Forecast> = []
-    
+
     override func viewDidLoad() {
         do {
             try self.fillUIWithObtainedData(forecast: forecast!)
@@ -39,15 +39,16 @@ class MainViewController: UIViewController {
     }
 
     func fillUIWithObtainedData(forecast: ExtendedForecast){
-        temperatureLabel.text = String(transposeWeatherParamToStringInCelcius(temp: forecast.temperature!))
-        stateLabel.text = forecast.state!
-        windLabel.text = String(describing: forecast.wind!) + " m/s"
-        dateLabel.text = forecast.date
-        cityNameLabel.text = String(forecast.cityName!)
-        downFallLabel.text = forecast.typeOfDownfall
-        downFallValueLabel.text = String(describing: forecast.downfall!) + " mm"
-        humidityLabel.text = String(forecast.humidity!) + " %"
-        
+        if let temperature = forecast.temperature, let state = forecast.state, let wind = forecast.wind, let date = forecast.date, let cityName = forecast.cityName, let humidity = forecast.humidity {
+            temperatureLabel.text = String(transposeWeatherParamToStringInCelcius(temp: temperature))
+            stateLabel.text = state
+            windLabel.text = String(describing: wind) + " m/s"
+            dateLabel.text = date
+            cityNameLabel.text = String(cityName)
+            humidityLabel.text = String(forecast.humidity!) + " %"
+            if let downfall = forecast.downfall { downFallValueLabel.text = String(describing: downfall) + " mm"
+            } else { downFallValueLabel.text = "0 mm" }
+        }
     }
     
     func transposeWeatherParamToStringInCelcius(temp: Double) -> String{
