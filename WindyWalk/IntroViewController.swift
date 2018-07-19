@@ -70,6 +70,7 @@ class IntroViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        hideLoadingHUD()
         let DestViewController: MainViewController = segue.destination as! MainViewController
         DestViewController.forecastArray = (weekForecast?.forecastArray)!
         DestViewController.forecast = forecast
