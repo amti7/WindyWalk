@@ -18,8 +18,8 @@ class IntroViewController: UIViewController {
     var forecast: ExtendedForecast?
     var weekForecast: WeekForecast?
     var activityIndicator:UIActivityIndicatorView = UIActivityIndicatorView()
-    
-    @IBAction func urlWithGivenCity(_ sender: Any) {
+
+    @IBAction func userAskedForForecast(_ sender: Any) {
         var cityName = cityNameTextField.text
         var url = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName! + "&appid=e3eeed175d5b660c006531bcb3a0117e"
         retrieveParamsByObjectMapper(path: url)
@@ -53,7 +53,14 @@ class IntroViewController: UIViewController {
                 if let forecasT = ExtendedForecast(JSON: json) {
                     self?.forecast = forecasT
                     DispatchQueue.main.async {
-                        self?.performSegue(withIdentifier: "IntroSegue", sender: self)
+                        if(self?.forecast?.temperature != nil) {
+                            self?.performSegue(withIdentifier: "IntroSegue", sender: self)
+                        } else {
+                            let alert = UIAlertController(title: "Error", message: "The city is not existing in the system.",preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default))
+                            self?.hideLoadingHUD()
+                            self?.present(alert, animated: true, completion: nil)
+                        }
                     }
                 }
             } catch {
